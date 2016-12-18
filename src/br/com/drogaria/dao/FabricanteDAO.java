@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
 
 import br.com.drogaria.domain.Fabricante;
 import br.com.drogaria.factory.ConexaoFactory;

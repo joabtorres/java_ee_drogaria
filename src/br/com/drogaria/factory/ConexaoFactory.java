@@ -10,6 +10,9 @@ public class ConexaoFactory {
 	private static final String PASSWORD = "96560262";
 
 	public static Connection getConnection() throws SQLException {
+		
+		DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+		
 		Connection conexao = DriverManager.getConnection(URL, USER, PASSWORD);
 		return conexao;
 	}

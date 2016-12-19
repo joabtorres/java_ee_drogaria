@@ -10,6 +10,7 @@ import javax.faces.model.ListDataModel;
 
 import br.com.drogaria.dao.FabricanteDAO;
 import br.com.drogaria.domain.Fabricante;
+import br.com.drogaria.util.JSFUTIL;
 
 @ManagedBean(name = "MBFabricante")
 @ViewScoped
@@ -43,6 +44,7 @@ public class FabricanteBean {
 			this.itens = new ListDataModel<Fabricante>(lista);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JSFUTIL.adicionarMensagemErro(e.getMessage());
 		}
 	}
 
@@ -57,8 +59,11 @@ public class FabricanteBean {
 
 			ArrayList<Fabricante> lista = dao.listar();
 			this.setItens(new ListDataModel<Fabricante>(lista));
+			
+			JSFUTIL.adicionarMensagemSucesso("Cadastro realizado com sucesso!");
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+			JSFUTIL.adicionarMensagemErro(ex.getMessage());
 		}
 	}
 }

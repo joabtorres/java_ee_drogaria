@@ -14,6 +14,15 @@ import br.com.drogaria.domain.Fabricante;
 @ManagedBean(name = "MBFabricante")
 @ViewScoped
 public class FabricanteBean {
+	private Fabricante fabricante;
+
+	public Fabricante getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(Fabricante fabricante) {
+		this.fabricante = fabricante;
+	}
 
 	private ListDataModel<Fabricante> itens;
 
@@ -24,8 +33,8 @@ public class FabricanteBean {
 	public void setItens(ListDataModel<Fabricante> itens) {
 		this.itens = itens;
 	}
-	
-	/* roda antes de exibir a tela*/
+
+	/* roda antes de exibir a tela */
 	@PostConstruct
 	public void preparaPesquisa() {
 		try {
@@ -34,6 +43,22 @@ public class FabricanteBean {
 			this.itens = new ListDataModel<Fabricante>(lista);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void preparaNovo() {
+		this.setFabricante(new Fabricante());
+	}
+
+	public void novo() {
+		try {
+			FabricanteDAO dao = new FabricanteDAO();
+			dao.salvar(this.getFabricante());
+
+			ArrayList<Fabricante> lista = dao.listar();
+			this.setItens(new ListDataModel<Fabricante>(lista));
+		} catch (SQLException ex) {
+			ex.printStackTrace();
 		}
 	}
 }

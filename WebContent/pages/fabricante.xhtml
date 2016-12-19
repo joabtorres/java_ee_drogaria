@@ -13,9 +13,11 @@
 
 	<ui:define name="conteudo">
 		<h:form id="frmFabListagem">
-			<p:dataTable id="tabelaFabricantes"
+			<p:dataTable id="tabelaFabricantes" widgetVar="tabelaFabricantesVar"
 				emptyMessage="Nenhum registro encontrado."
-				value="#{MBFabricante.itens}" var="item" paginator="true" rows="10">
+				value="#{MBFabricante.itens}" var="item"
+				filteredValue="#{MBFabricante.itensFiltrados}" paginator="true"
+				rows="7">
 				<f:facet name="header">Lista dos fabricantes</f:facet>
 				<p:column headerText="Código" sortBy="#{item.codigo}"
 					filterBy="#{item.codigo}">
@@ -25,6 +27,21 @@
 				<p:column headerText="Descrição" sortBy="#{item.descricao}"
 					filterBy="#{item.descricao}">
 					<h:outputText value="#{item.descricao}" />
+				</p:column>
+				<p:column headerText="Opção">
+					<p:commandButton icon="ui-icon-trash"
+						oncomplete="PF('dialogoFabricanteExcluir').show();"
+						update=":formFabExcluir:panelFabExcluir">
+						<f:setPropertyActionListener target="#{MBFabricante.fabricante}"
+							value="#{item}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil"
+						oncomplete="PF('dialogFabricanteEditar').show();"
+						update=":formFabEditar:panelFabEditar">
+						<f:setPropertyActionListener target="#{MBFabricante.fabricante}"
+							value="#{item}" />
+					</p:commandButton>
 				</p:column>
 				<f:facet name="footer">
 					<p:commandButton value="Novo"
@@ -48,7 +65,7 @@
 				<h:panelGrid columns="2">
 					<p:commandButton value="Gravar"
 						actionListener="#{MBFabricante.novo}"
-						oncomplete="PF('dialogFabricanteNovo').hide();"
+						oncomplete="PF('dialogFabricanteNovo').hide(); tabelaFabricantesVar.clearFilters();"
 						update=":frmFabListagem:tabelaFabricantes :msgGlobal" />
 					<p:commandButton value="Cancelar"
 						onclick="PF('dialogFabricanteNovo').hide();" />
@@ -56,6 +73,50 @@
 			</h:form>
 		</p:dialog>
 
+		<p:dialog widgetVar="dialogoFabricanteExcluir" closable="true"
+			draggable="false" resizable="false" modal="true" appendTo="@(body)"
+			header="Excluir Fabricante">
+			<h:form id="formFabExcluir">
+				<h:panelGrid columns="2" id="panelFabExcluir">
+					<p:outputLabel value="Código: " />
+					<h:outputText value="#{MBFabricante.fabricante.codigo}" />
+
+					<p:outputLabel value="Descrição: " />
+					<h:outputText value="#{MBFabricante.fabricante.descricao}" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir"
+						actionListener="#{MBFabricante.excluir}"
+						oncomplete="PF('dialogoFabricanteExcluir').hide(); tabelaFabricantesVar.clearFilters();"
+						update=":frmFabListagem:tabelaFabricantes :msgGlobal" />
+					<p:commandButton value="Canelar"
+						onclick="PF('dialogoFabricanteExcluir').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog widgetVar="dialogFabricanteEditar" closable="true"
+			draggable="fase" resizable="false" modal="true" appendTo="@(body)"
+			header="Editar Fabricante">
+			<h:form id="formFabEditar">
+				<h:panelGrid columns="2" id="panelFabEditar">
+					<p:outputLabel value="Codigo: " />
+					<h:outputText value="#{MBFabricante.fabricante.codigo}" />
+					<p:outputLabel value="Descrição: " for="cDescricao" />
+					<p:inputText value="#{MBFabricante.fabricante.descricao}"
+						maxlength="50" size="35" id="cDescricao" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Ediar"
+						actionListener="#{MBFabricante.editar}"
+						oncomplete="PF('dialogFabricanteEditar').hide(); tabelaFabricantesVar.clearFilters();"
+						update=":frmFabListagem:tabelaFabricantes :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dialogFabricanteEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 
 </ui:composition>

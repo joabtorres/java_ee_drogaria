@@ -11,3 +11,7 @@
 .ui-widget, .ui-widget .ui-widget{
 	font-size: 11pt !important;
 } 
+
+.text-center{
+	text-align: center;
+}

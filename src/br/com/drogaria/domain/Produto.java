@@ -47,4 +47,10 @@ public class Produto {
 		this.fabricante = fabricante;
 	}
 
+	@Override
+	public String toString() {
+		return "Código do Produto: " + this.codigo + " - Descrição: " + this.descricao + " - Preço: " + this.preco + " - Quantidade: "
+				+ this.quantidade + " - Código do Fabricante: " + this.getFabricante().getCodigo() + " - Descrição: "
+				+ this.getFabricante().getDescricao();
+	}
 }
